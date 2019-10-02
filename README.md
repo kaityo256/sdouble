@@ -28,6 +28,15 @@ int main() {
 }
 ```
 
+And here is the expected results.
+
+```txt
+Mean and standard deviation
+99.9247 +- 2.9753
+Mean and standard deviation of the mean
+99.9247 +- 0.0941344
+```
+
 When `stat::double` is put into stream, it will show the standard deviation of the mean instead of the sample standard deviation. You can obtain the sample standard deviation by `stddev()`.
 
 ## Test
