@@ -101,7 +101,7 @@ struct sdouble {
   /*
     Error Propagation
   */
-  sdouble operator+(sdouble &rhs) const {
+  sdouble operator+(const sdouble &rhs) const {
     sdouble x1(*this);
     sdouble x2(rhs);
     x1.calculate();
@@ -111,7 +111,7 @@ struct sdouble {
     return sdouble(v, e);
   }
 
-  sdouble operator-(sdouble &rhs) const {
+  sdouble operator-(const sdouble &rhs) const {
     sdouble x1(*this);
     sdouble x2(rhs);
     x1.calculate();
@@ -121,7 +121,7 @@ struct sdouble {
     return sdouble(v, e);
   }
 
-  sdouble operator*(sdouble &rhs) const {
+  sdouble operator*(const sdouble &rhs) const {
     sdouble x1(*this);
     sdouble x2(rhs);
     x1.calculate();
@@ -133,7 +133,7 @@ struct sdouble {
     return sdouble(v, e);
   }
 
-  sdouble operator/(sdouble &rhs) const {
+  sdouble operator/(const sdouble &rhs) const {
     sdouble x1(*this);
     sdouble x2(rhs);
     x1.calculate();
@@ -155,44 +155,51 @@ std::ostream &operator<<(std::ostream &stream, const sdouble &v) {
 
 } // namespace stat
 
-stat::sdouble operator+(stat::sdouble &obj, double v) {
+stat::sdouble operator+(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value + v, x.error);
 }
 
-stat::sdouble operator+(double v, stat::sdouble &obj) {
+stat::sdouble operator+(double v, const stat::sdouble &obj) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value + v, x.error);
 }
 
-stat::sdouble operator-(stat::sdouble &obj, double v) {
+stat::sdouble operator-(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value - v, x.error);
 }
 
-stat::sdouble operator-(double v, stat::sdouble &obj) {
+stat::sdouble operator-(double v, const stat::sdouble &obj) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(v - x.value, x.error);
 }
 
-stat::sdouble operator*(stat::sdouble &obj, double v) {
+stat::sdouble operator*(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value * v, x.error * v);
 }
 
-stat::sdouble operator*(double v, stat::sdouble &obj) {
+stat::sdouble operator*(double v, const stat::sdouble &obj) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value * v, x.error * v);
 }
 
-stat::sdouble operator/(stat::sdouble &obj, double v) {
+stat::sdouble operator/(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
   return stat::sdouble(x.value / v, x.error / v);
 }
+/*
+stat::sdouble operator*(const stat::sdouble &lhs, const stat::sdouble &rhs) {
+  stat::sdouble x = lhs;
+  x = x * rhs;
+  return stat::sdouble(x.value, x.error);
+}
+*/
