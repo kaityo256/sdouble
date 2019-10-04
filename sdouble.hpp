@@ -44,8 +44,8 @@ struct sdouble {
       : value(0.0), error(0.0), isCalculated(false) {
   }
 
-  sdouble(double v, double e)
-      : value(v), error(e), isCalculated(true) {
+  sdouble(double value, double error)
+      : value(value), error(error), isCalculated(true) {
   }
 
   sdouble(const sdouble &obj) {
@@ -93,6 +93,11 @@ struct sdouble {
   void operator<<(double v) {
     add(v);
   }
+
+  /*
+    Calculation without uncertainty
+  */
+
   /*
     Error Propagation
   */
@@ -149,3 +154,45 @@ std::ostream &operator<<(std::ostream &stream, const sdouble &v) {
 }
 
 } // namespace stat
+
+stat::sdouble operator+(stat::sdouble &obj, double v) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value + v, x.error);
+}
+
+stat::sdouble operator+(double v, stat::sdouble &obj) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value + v, x.error);
+}
+
+stat::sdouble operator-(stat::sdouble &obj, double v) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value - v, x.error);
+}
+
+stat::sdouble operator-(double v, stat::sdouble &obj) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(v - x.value, x.error);
+}
+
+stat::sdouble operator*(stat::sdouble &obj, double v) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value * v, x.error * v);
+}
+
+stat::sdouble operator*(double v, stat::sdouble &obj) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value * v, x.error * v);
+}
+
+stat::sdouble operator/(stat::sdouble &obj, double v) {
+  stat::sdouble x = obj;
+  x.calculate();
+  return stat::sdouble(x.value / v, x.error / v);
+}
