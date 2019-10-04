@@ -6,6 +6,54 @@ A single-header C++ for double with error propagation.
 
 ## Usage
 
+### constructor
+
+```cpp
+stat::sdouble v;
+stat::sdouble v(mean, error);
+```
+
+The constructor `stat::sdouble v(mean, error)` creates an `stat::sdouble` object whose mean is `mean` and the error (standard deviation) is `error`. Without arguments, the constructor creates an uninitialized object.
+
+### Print the values
+
+When `stat::double` is put into stream, it will show the mean and error.
+
+```cpp
+stat::sdouble v(5.1,1.2);
+std::cout << v << std::endl;
+```
+
+Here is the output.
+
+```txt
+5.1 +- 1.2
+```
+
+### Error Propagation
+
+Calculations between `stat::sdouble` variables follows the error propagation formula.
+
+Consider two quantities $X_1 = x_1 \pm \delta x_1$ and $X_2 = x_2 \pm \delta x_2$. The addition between them becomes $X_1 + X_2 = (x_1 + x_2) \pm \sqrt{\delta x_1^2 +\delta x_2^2}$. You can confirm this formula as follows.
+
+A sample code.
+
+```cpp
+stat::sdouble x1(5,1);
+stat::sdouble x2(10,2);
+std::cout << x1 + x2 << std::endl;
+```
+
+Output.
+
+```txt
+15 +- 2.23607
+```
+
+Other operators such as `-`, `*`, `/` are definined with similar manner.
+
+## Data input
+
 Here is the sample.
 
 ```cpp
@@ -28,7 +76,7 @@ int main() {
 }
 ```
 
-And here is the expected results.
+And here is the results.
 
 ```txt
 Mean and standard deviation

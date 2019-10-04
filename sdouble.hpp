@@ -48,6 +48,18 @@ struct sdouble {
       : value(v), error(e), isCalculated(true) {
   }
 
+  sdouble(const sdouble &obj) {
+    if (obj.isCalculated) {
+      value = obj.value;
+      error = obj.error;
+    } else {
+      x.resize(obj.x.size());
+      std::copy(obj.x.begin(), obj.x.end(), x.begin());
+      calculate();
+    }
+    isCalculated = obj.isCalculated;
+  }
+
   double mean() {
     calculate();
     return value;
@@ -84,46 +96,55 @@ struct sdouble {
   /*
     Error Propagation
   */
-  sdouble operator+(sdouble &rhs) {
-    calculate();
-    rhs.calculate();
-    double v = value + rhs.value;
-    double e = sqrt(error * error + rhs.error * rhs.error);
+  sdouble operator+(sdouble &rhs) const {
+    sdouble x1(*this);
+    sdouble x2(rhs);
+    x1.calculate();
+    x2.calculate();
+    double v = x1.value + x2.value;
+    double e = sqrt(x1.error * x1.error + x2.error * x2.error);
     return sdouble(v, e);
   }
 
-  sdouble operator-(sdouble &rhs) {
-    calculate();
-    rhs.calculate();
-    double v = value - rhs.value;
-    double e = sqrt(error * error + rhs.error * rhs.error);
+  sdouble operator-(sdouble &rhs) const {
+    sdouble x1(*this);
+    sdouble x2(rhs);
+    x1.calculate();
+    x2.calculate();
+    double v = x1.value - x2.value;
+    double e = sqrt(x1.error * x1.error + x2.error * x2.error);
     return sdouble(v, e);
   }
 
-  sdouble operator*(sdouble &rhs) {
-    calculate();
-    rhs.calculate();
-    double v = value * rhs.value;
-    double e1 = error * rhs.value;
-    double e2 = rhs.error * value;
+  sdouble operator*(sdouble &rhs) const {
+    sdouble x1(*this);
+    sdouble x2(rhs);
+    x1.calculate();
+    x2.calculate();
+    double v = x1.value * x2.value;
+    double e1 = x1.error * x2.value;
+    double e2 = x2.error * x1.value;
     double e = sqrt(e1 * e1 + e2 * e2);
     return sdouble(v, e);
   }
 
-  sdouble operator/(sdouble &rhs) {
-    calculate();
-    rhs.calculate();
-    double v = value / rhs.value;
-    double e1 = error / value;
-    double e2 = rhs.error / rhs.value;
+  sdouble operator/(sdouble &rhs) const {
+    sdouble x1(*this);
+    sdouble x2(rhs);
+    x1.calculate();
+    x2.calculate();
+    double v = x1.value / x2.value;
+    double e1 = x1.error / x1.value;
+    double e2 = x2.error / x2.value;
     double e = v * sqrt(e1 * e1 + e2 * e2);
     return sdouble(v, e);
   }
 };
 
-std::ostream &operator<<(std::ostream &stream, sdouble &v) {
-  v.calculate();
-  stream << v.value << " +- " << v.error;
+std::ostream &operator<<(std::ostream &stream, const sdouble &v) {
+  sdouble v2 = v;
+  v2.calculate();
+  stream << v2.value << " +- " << v2.error;
   return stream;
 }
 
