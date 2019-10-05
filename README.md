@@ -90,6 +90,7 @@ When `stat::double` is put into stream, it will show the standard deviation of t
 ## Test
 
 ```cpp
+cd test
 make
 ./a.out
 ```
@@ -97,6 +98,21 @@ make
 Expected results.
 
 ```txt
+Test for compound operators
+x = 10 +- 1
+(x += 1.0) 11 +- 1
+(x -= 1.0) 9 +- 1
+(x *= 2.0) 20 +- 2
+(x /= 2.0) 5 +- 0.5
+
+Test for binary operators
+x = 100 +- 3
+y = 50 +- 1
+(x + y) 150 +- 3.16228
+(x - y) 50 +- 3.16228
+(x * y) 5000 +- 180.278
+(x / y) 2 +- 0.072111
+
 Test for standard deviation
 ----------------
 Mean and standard deviation

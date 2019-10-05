@@ -133,16 +133,16 @@ struct sdouble {
     return sdouble(x);
   }
 
-  sdouble operator*=(const sdouble &rhs) const {
+  sdouble operator*=(const sdouble &rhs) {
     sdouble x(*this);
     sdouble y(rhs);
     x.calculate();
     y.calculate();
-    double v = x.value * y.value;
+    value = x.value * y.value;
     double e1 = x.error * y.value;
     double e2 = y.error * x.value;
-    double e = sqrt(e1 * e1 + e2 * e2);
-    return sdouble(v, e);
+    error = sqrt(e1 * e1 + e2 * e2);
+    return *this;
   }
 
   sdouble operator*(const sdouble &rhs) const {
