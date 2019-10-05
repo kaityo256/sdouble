@@ -95,54 +95,107 @@ struct sdouble {
   }
 
   /*
-    Calculation without uncertainty
-  */
-
-  /*
     Error Propagation
   */
+  sdouble operator+=(const sdouble &rhs) {
+    sdouble y(rhs);
+    calculate();
+    y.calculate();
+    value = value + y.value;
+    error = sqrt(error * error + y.error * y.error);
+    return *this;
+  }
+
   sdouble operator+(const sdouble &rhs) const {
-    sdouble x1(*this);
-    sdouble x2(rhs);
-    x1.calculate();
-    x2.calculate();
-    double v = x1.value + x2.value;
-    double e = sqrt(x1.error * x1.error + x2.error * x2.error);
-    return sdouble(v, e);
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    x += y;
+    return sdouble(x);
+  }
+
+  sdouble operator-=(const sdouble &rhs) {
+    sdouble y(rhs);
+    calculate();
+    y.calculate();
+    value = value - y.value;
+    error = sqrt(error * error + y.error * y.error);
+    return *this;
   }
 
   sdouble operator-(const sdouble &rhs) const {
-    sdouble x1(*this);
-    sdouble x2(rhs);
-    x1.calculate();
-    x2.calculate();
-    double v = x1.value - x2.value;
-    double e = sqrt(x1.error * x1.error + x2.error * x2.error);
-    return sdouble(v, e);
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    x -= y;
+    return sdouble(x);
   }
 
-  sdouble operator*(const sdouble &rhs) const {
-    sdouble x1(*this);
-    sdouble x2(rhs);
-    x1.calculate();
-    x2.calculate();
-    double v = x1.value * x2.value;
-    double e1 = x1.error * x2.value;
-    double e2 = x2.error * x1.value;
+  sdouble operator*=(const sdouble &rhs) const {
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    double v = x.value * y.value;
+    double e1 = x.error * y.value;
+    double e2 = y.error * x.value;
     double e = sqrt(e1 * e1 + e2 * e2);
     return sdouble(v, e);
   }
 
+  sdouble operator*(const sdouble &rhs) const {
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    x *= y;
+    return sdouble(x);
+  }
+
+  sdouble operator/=(const sdouble &rhs) {
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    value = x.value / y.value;
+    double e1 = x.error / x.value;
+    double e2 = y.error / y.value;
+    error = value * sqrt(e1 * e1 + e2 * e2);
+    return sdouble(*this);
+  }
+
   sdouble operator/(const sdouble &rhs) const {
-    sdouble x1(*this);
-    sdouble x2(rhs);
-    x1.calculate();
-    x2.calculate();
-    double v = x1.value / x2.value;
-    double e1 = x1.error / x1.value;
-    double e2 = x2.error / x2.value;
-    double e = v * sqrt(e1 * e1 + e2 * e2);
-    return sdouble(v, e);
+    sdouble x(*this);
+    sdouble y(rhs);
+    x.calculate();
+    y.calculate();
+    x /= y;
+    return sdouble(x);
+  }
+
+  /*
+    Calculation without uncertainty
+  */
+  sdouble &operator+=(const double v) {
+    operator+=(sdouble(v, 0.0));
+    return *this;
+  }
+
+  sdouble &operator-=(const double v) {
+    operator-=(sdouble(v, 0.0));
+    return *this;
+  }
+
+  sdouble &operator*=(const double v) {
+    operator*=(sdouble(v, 0.0));
+    return *this;
+  }
+
+  sdouble &operator/=(const double v) {
+    operator/=(sdouble(v, 0.0));
+    return *this;
   }
 };
 
@@ -157,20 +210,20 @@ std::ostream &operator<<(std::ostream &stream, const sdouble &v) {
 
 stat::sdouble operator+(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
-  x.calculate();
-  return stat::sdouble(x.value + v, x.error);
+  //x.calculate();
+  x += v;
+  return stat::sdouble(x);
 }
 
 stat::sdouble operator+(double v, const stat::sdouble &obj) {
-  stat::sdouble x = obj;
-  x.calculate();
-  return stat::sdouble(x.value + v, x.error);
+  return operator+(obj, v);
 }
 
 stat::sdouble operator-(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
-  return stat::sdouble(x.value - v, x.error);
+  x -= v;
+  return stat::sdouble(x);
 }
 
 stat::sdouble operator-(double v, const stat::sdouble &obj) {
@@ -182,24 +235,26 @@ stat::sdouble operator-(double v, const stat::sdouble &obj) {
 stat::sdouble operator*(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
-  return stat::sdouble(x.value * v, x.error * v);
+  x *= v;
+  return stat::sdouble(x);
 }
 
 stat::sdouble operator*(double v, const stat::sdouble &obj) {
-  stat::sdouble x = obj;
-  x.calculate();
-  return stat::sdouble(x.value * v, x.error * v);
+  return operator*(obj, v);
 }
 
 stat::sdouble operator/(const stat::sdouble &obj, double v) {
   stat::sdouble x = obj;
   x.calculate();
-  return stat::sdouble(x.value / v, x.error / v);
+  x /= v;
+  return stat::sdouble(x);
 }
-/*
-stat::sdouble operator*(const stat::sdouble &lhs, const stat::sdouble &rhs) {
-  stat::sdouble x = lhs;
-  x = x * rhs;
-  return stat::sdouble(x.value, x.error);
+
+stat::sdouble operator/(double v, const stat::sdouble &obj) {
+  stat::sdouble x = obj;
+  x.calculate();
+  double e = x.error / x.value;
+  x.value = v / x.value;
+  x.error = x.value * e;
+  return stat::sdouble(x);
 }
-*/

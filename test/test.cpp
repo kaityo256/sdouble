@@ -1,4 +1,4 @@
-#include "sdouble.hpp"
+#include "../sdouble.hpp"
 #include <iostream>
 #include <random>
 
@@ -6,6 +6,39 @@ std::mt19937 mt(1);
 std::normal_distribution<> nd1(100.0, 3.0);
 std::normal_distribution<> nd2(50.0, 1.0);
 const int loop = 1000000;
+
+void test_without_uncertainty_compound() {
+  std::cout << "Test for compound operators" << std::endl;
+  stat::sdouble x(10.0, 1.0), y;
+  std::cout << "x = " << x << std::endl;
+  y = x;
+  y += 1.0;
+  std::cout << "(x += 1.0) " << y << std::endl;
+  y = x;
+  y -= 1.0;
+  std::cout << "(x -= 1.0) " << y << std::endl;
+  y = x;
+  y *= 2.0;
+  std::cout << "(x *= 2.0) " << y << std::endl;
+  y = x;
+  y /= 2.0;
+  std::cout << "(x /= 2.0) " << y << std::endl;
+  std::cout << std::endl;
+}
+void test_binary_operators() {
+  std::cout << "Test for binary operators" << std::endl;
+  stat::sdouble x(100.0, 3.0);
+  stat::sdouble y(50.0, 1.0);
+  stat::sdouble z;
+
+  std::cout << "x = " << x << std::endl;
+  std::cout << "y = " << y << std::endl;
+  std::cout << "(x + y) " << x + y << std::endl;
+  std::cout << "(x - y) " << x - y << std::endl;
+  std::cout << "(x * y) " << x * y << std::endl;
+  std::cout << "(x / y) " << x / y << std::endl;
+  std::cout << std::endl;
+}
 
 void test() {
   stat::sdouble v;
@@ -92,6 +125,8 @@ void div_test() {
 }
 
 int main() {
+  test_without_uncertainty_compound();
+  test_binary_operators();
   std::cout << "Test for standard deviation" << std::endl;
   std::cout << "----------------" << std::endl;
   test();
