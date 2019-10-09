@@ -95,6 +95,49 @@ The output will be `average +- stddev of the mean`.
 
 When `stat::double` is put into stream, it will show *the standard deviation of the mean* instead of *the sample standard deviation*. You can obtain the sample standard deviation by `stddev()` which is identical to `STDEV.S` function of Excel.
 
+## Wrapper of MPI_Allreduce
+
+`stat::reduce` is the wrapper of `MPI_Allreduce`. You can use it by including `sdouble_mpi.hpp`.
+
+Here is the sample.
+
+```cpp
+#include "sdouble_mpi.hpp"
+#include <iostream>
+#include <mpi.h>
+
+int main(int argc, char **argv) {
+  MPI_Init(&argc, &argv);
+  int rank = 0;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  double v = rank + 1.0;
+  stat::sdouble sd = stat::reduce(v);
+  if (rank == 0) {
+    std::cout << sd << std::endl;
+  }
+  MPI_Finalize();
+}
+```
+
+When the number of proccesses is 4, the above sample is identical to
+
+```cpp
+stat::sdouble sd;
+sd << 1.0;
+sd << 2.0;
+sd << 3.0;
+sd << 4.0;
+std::cout << sd << std::endl;
+```
+
+The output will be as follows.
+
+```sh
+$ mpic++ test.cpp
+$ mpirun -np 4 ./a.out
+2.5 +- 0.645497
+```
+
 ## License
 
 This software is released under the MIT License, see [LICENSE](LICENSE).
