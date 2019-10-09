@@ -7,5 +7,9 @@ a.out: test.cpp ../sdouble.hpp
 
 .PHONY: clean
 
+test: a.out
+	./a.out > test.txt
+	diff test.txt expected_results.txt
+
 clean:
 	rm -f a.out
