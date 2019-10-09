@@ -67,7 +67,7 @@ struct sdouble {
 
   double stddev() {
     calculate();
-    return error * sqrt(x.size() - 1.0);
+    return error * sqrt(x.size());
   }
 
   // Calculate value (mean) and error (std. dev. of mean)
