@@ -34,118 +34,66 @@ Here is the output.
 
 Calculations between `stat::sdouble` variables follows the error propagation formula.
 
-Consider two quantities $X_1 = x_1 \pm \delta x_1$ and $X_2 = x_2 \pm \delta x_2$. The addition between them becomes $X_1 + X_2 = (x_1 + x_2) \pm \sqrt{\delta x_1^2 +\delta x_2^2}$. You can confirm this formula as follows.
-
-A sample code.
+Here is a sample code.
 
 ```cpp
-stat::sdouble x1(5,1);
-stat::sdouble x2(10,2);
+stat::sdouble x1(10,2);
+stat::sdouble x2(5,1);
+stat::sdouble x1(10, 2);
+stat::sdouble x2(5, 1);
 std::cout << x1 + x2 << std::endl;
+std::cout << x1 - x2 << std::endl;
+std::cout << x1 * x2 << std::endl;
+std::cout << x1 / x2 << std::endl;
 ```
 
 Output.
 
 ```txt
 15 +- 2.23607
+5 +- 2.23607
+50 +- 14.1421
+2 +- 0.565685
+```
+
+Here is the identical python script.
+
+```py
+from uncertainties import ufloat
+  
+x1 = ufloat(10.0, 2.0)
+x2 = ufloat(5.0, 1.0)
+
+print(x1 + x2)
+print(x1 - x2)
+print(x1 * x2)
+print(x1 / x2)
 ```
 
 Other operators such as `-`, `*`, `/` are definined with similar manner.
 
 ## Data input
 
+`stat::sdouble` can store the data with `<<` operator.
+
 Here is the sample.
 
 ```cpp
-#include "sdouble.hpp"
-#include <iostream>
-#include <random>
-
-std::mt19937 mt(1);
-std::normal_distribution<> nd(100.0, 3.0);
-
-int main() {
-  stat::sdouble v;
-  for (int i = 0; i < 1000; i++) {
-    v << nd(mt);
-  }
-  std::cout << "Mean and standard deviation" << std::endl;
-  std::cout << v.mean() << " +- " << v.stddev() << std::endl;
-  std::cout << "Mean and standard deviation of the mean" << std::endl;
-  std::cout << v << std::endl;
-}
+stat::sdouble x;
+x << 1.0;
+x << 2.0;
+x << 3.0;
+x << 4.0;
+std::cout << v << std::endl;
 ```
 
-And here is the results.
+The output will be `average +- stddev of the mean`.
 
 ```txt
-Mean and standard deviation
-99.9247 +- 2.9753
-Mean and standard deviation of the mean
-99.9247 +- 0.0941344
+2.5 +- 0.645497
 ```
 
-When `stat::double` is put into stream, it will show the standard deviation of the mean instead of the sample standard deviation. You can obtain the sample standard deviation by `stddev()`.
-
-## Test
-
-```cpp
-cd test
-make
-./a.out
-```
-
-Expected results.
-
-```txt
-Test for compound operators
-x = 10 +- 1
-(x += 1.0) 11 +- 1
-(x -= 1.0) 9 +- 1
-(x *= 2.0) 20 +- 2
-(x /= 2.0) 5 +- 0.5
-
-Test for binary operators
-x = 100 +- 3
-y = 50 +- 1
-(x + y) 150 +- 3.16228
-(x - y) 50 +- 3.16228
-(x * y) 5000 +- 180.278
-(x / y) 2 +- 0.072111
-
-Test for standard deviation
-----------------
-Mean and standard deviation
-99.9247 +- 2.9753
-Mean and standard deviation of the mean
-99.9247 +- 0.0941344
-
-Tests for error propagation
-----------------
-Add Test
-d1    = 100.006 +- 0.00300081
-d2    = 49.9986 +- 0.000999754
-d1+d2 = 150.005 +- 0.00316399
-d1+d2 = 150.005 +- 0.00316297
-
-Subtraction Test
-d1    = 99.9992 +- 0.00300174
-d2    = 49.9996 +- 0.000998951
-d1-d2 = 49.9996 +- 0.00316422
-d1-d2 = 49.9996 +- 0.0031636
-
-Multiplication Test
-d1    = 99.998 +- 0.00299997
-d2    = 49.9999 +- 0.000999695
-d1*d2 = 4999.89 +- 0.180274
-d1*d2 = 4999.89 +- 0.180258
-
-Division Test
-d1    = 100.002 +- 0.00299843
-d2    = 49.9996 +- 0.00100151
-d1/d2 = 2.00086 +- 7.22068e-05
-d1/d2 = 2.00006 +- 7.21197e-05
-```
+When `stat::double` is put into stream, it will show *the standard deviation of the mean* instead of *the sample standard deviation*. You can obtain the sample standard deviation by `stddev()` which is identical to `STDEV.S` function of Excel.
 
 ## License
 

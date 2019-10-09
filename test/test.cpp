@@ -8,7 +8,7 @@ std::normal_distribution<> nd2(50.0, 1.0);
 const int loop = 1000000;
 
 void test_without_uncertainty_compound() {
-  std::cout << "Test for compound operators" << std::endl;
+  std::cout << "Tests for compound operators" << std::endl;
   stat::sdouble x(10.0, 1.0), y;
   std::cout << "x = " << x << std::endl;
   y = x;
@@ -26,9 +26,9 @@ void test_without_uncertainty_compound() {
   std::cout << std::endl;
 }
 void test_binary_operators() {
-  std::cout << "Test for binary operators" << std::endl;
-  stat::sdouble x(100.0, 3.0);
-  stat::sdouble y(50.0, 1.0);
+  std::cout << "Tests for binary operators" << std::endl;
+  stat::sdouble x(10.0, 2.0);
+  stat::sdouble y(5.0, 1.0);
   stat::sdouble z;
 
   std::cout << "x = " << x << std::endl;
@@ -125,8 +125,14 @@ void div_test() {
 }
 
 int main() {
+  std::cout << "Test for Error Propagation" << std::endl;
+  std::cout << "----------------" << std::endl;
   test_without_uncertainty_compound();
   test_binary_operators();
+
+  std::cout << "Test for Data Input" << std::endl;
+  std::cout << "----------------" << std::endl;
+
   std::cout << "Test for standard deviation" << std::endl;
   std::cout << "----------------" << std::endl;
   test();

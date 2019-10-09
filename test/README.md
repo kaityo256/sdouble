@@ -1,0 +1,64 @@
+# Test code
+
+## Usage
+
+```sh
+g++ test.cpp
+./a.out
+```
+
+## Expected results
+
+```txt
+Test for Error Propagation
+----------------
+Tests for compound operators
+x = 10 +- 1
+(x += 1.0) 11 +- 1
+(x -= 1.0) 9 +- 1
+(x *= 2.0) 20 +- 2
+(x /= 2.0) 5 +- 0.5
+
+Tests for binary operators
+x = 10 +- 2
+y = 5 +- 1
+(x + y) 15 +- 2.23607
+(x - y) 5 +- 2.23607
+(x * y) 50 +- 14.1421
+(x / y) 2 +- 0.565685
+
+Test for Data Input
+----------------
+Test for standard deviation
+----------------
+Mean and standard deviation
+99.9247 +- 2.97679
+Mean and standard deviation of the mean
+99.9247 +- 0.0941344
+
+Tests for error propagation
+----------------
+Add Test
+d1    = 100.006 +- 0.00300081
+d2    = 49.9986 +- 0.000999754
+d1+d2 = 150.005 +- 0.00316399
+d1+d2 = 150.005 +- 0.00316297
+
+Subtraction Test
+d1    = 99.9992 +- 0.00300174
+d2    = 49.9996 +- 0.000998951
+d1-d2 = 49.9996 +- 0.00316422
+d1-d2 = 49.9996 +- 0.0031636
+
+Multiplication Test
+d1    = 99.998 +- 0.00299997
+d2    = 49.9999 +- 0.000999695
+d1*d2 = 4999.89 +- 0.180274
+d1*d2 = 4999.89 +- 0.180258
+
+Division Test
+d1    = 100.002 +- 0.00299843
+d2    = 49.9996 +- 0.00100151
+d1/d2 = 2.00086 +- 7.22068e-05
+d1/d2 = 2.00006 +- 7.21197e-05
+```
