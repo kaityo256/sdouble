@@ -7,5 +7,19 @@ a.out: random_test.cpp ../sdouble.hpp
 
 .PHONY: clean
 
+graph: average.png stddev.png
+
+average.png: test.dat
+
+stddev.png: test.dat
+
+test.dat: a.out
+	./a.out > test.dat
+
+
+%.png: %.plt
+	gnuplot $<
+
+
 clean:
 	rm -f a.out

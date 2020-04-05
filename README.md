@@ -95,6 +95,38 @@ The output will be `average +- stddev of the mean`.
 
 When `stat::double` is put into stream, it will show *the standard deviation of the mean* instead of *the sample standard deviation*. You can obtain the sample standard deviation by `stddev()` which is identical to `STDEV.S` function of Excel.
 
+### Sample Code
+
+Here is a sample code in `random` directory. It investigates the sample-number dependence of the standard deviation.
+
+```cpp
+#include "../sdouble.hpp"
+#include <iostream>
+#include <random>
+
+int main() {
+  std::mt19937 mt(1);
+  std::uniform_real_distribution<double> ud(0.0, 1.0);
+  const int total_loop = 100000;
+  const int observe_loop = 100;
+  stat::sdouble data;
+  for (int i = 0; i <= total_loop; i++) {
+    data << ud(mt);
+    if (i % observe_loop == 0) {
+      std::cout << i << " " << data << std::endl;
+    }
+  }
+}
+```
+
+Here is the average. It converges to 0.5.
+
+![Average](random/average.png)
+
+Here is the standard deviation. It reduces as 1/sqrt(N) where N is the number of samples.
+
+![Standard deviation](random/stddev.png)
+
 ## Wrapper of MPI_Allreduce
 
 `stat::reduce` is the wrapper of `MPI_Allreduce`. You can use it by including `sdouble_mpi.hpp`.
