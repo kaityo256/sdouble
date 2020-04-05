@@ -87,6 +87,7 @@ struct sdouble {
   // store X_i
   void add(double v) {
     x.push_back(v);
+    isCalculated = false;
   }
 
   // Alias of add
