@@ -48,7 +48,8 @@ struct sdouble {
       : value(value), error(error), isCalculated(true) {
   }
 
-  sdouble(const sdouble &obj) {
+  sdouble(const sdouble &obj)
+      : value(0.0), error(0.0), isCalculated(true) {
     if (obj.isCalculated) {
       value = obj.value;
       error = obj.error;
