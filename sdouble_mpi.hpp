@@ -30,17 +30,16 @@ SOFTWARE.
 #include <mpi.h>
 
 namespace stat {
+namespace mpi {
 sdouble reduce(double v) {
   int rank = 0;
   int procs = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procs);
   std::vector<double> buf(procs, 0.0);
-  sdouble sd;
   MPI_Allgather(&v, 1, MPI_DOUBLE, buf.data(), 1, MPI_DOUBLE, MPI_COMM_WORLD);
-  for (int i = 0; i < procs; i++) {
-    sd << buf[i];
-  }
+  sdouble sd(buf);
   return sd;
 }
+} // namespace mpi
 } // namespace stat
