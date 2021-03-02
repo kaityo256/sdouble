@@ -41,27 +41,31 @@ void test_binary_operators() {
 }
 
 void test() {
-  stat::sdouble v;
+  std::vector<double> x;
   for (int i = 0; i < 1000; i++) {
-    v << nd1(mt);
+    x.push_back(nd1(mt));
   }
-  std::cout << "Mean and standard deviation" << std::endl;
-  std::cout << v.mean() << " +- " << v.stddev() << std::endl;
+  stat::sdouble v(x);
   std::cout << "Mean and standard deviation of the mean" << std::endl;
   std::cout << v << std::endl;
   std::cout << std::endl;
 }
 
+/*
+  Compare between direct calculation and error propagation.
+  Operation: Addition
+ */
 void add_test() {
   std::cout << "Add Test" << std::endl;
-  stat::sdouble d1, d2, d3;
+  std::vector<double> v1, v2, v3;
   for (int i = 0; i < loop; i++) {
-    double v1 = nd1(mt);
-    double v2 = nd2(mt);
-    d1 << v1;
-    d2 << v2;
-    d3 << (v1 + v2);
+    double r1 = nd1(mt);
+    double r2 = nd2(mt);
+    v1.push_back(r1);
+    v2.push_back(r2);
+    v3.push_back(r1 + r2);
   }
+  stat::sdouble d1(v1), d2(v2), d3(v3);
   stat::sdouble d4 = d1 + d2;
   std::cout << "d1    = " << d1 << std::endl;
   std::cout << "d2    = " << d2 << std::endl;
@@ -70,16 +74,21 @@ void add_test() {
   std::cout << std::endl;
 }
 
+/*
+  Compare between direct calculation and error propagation.
+  Operation: Subtraction
+ */
 void sub_test() {
   std::cout << "Subtraction Test" << std::endl;
-  stat::sdouble d1, d2, d3;
+  std::vector<double> v1, v2, v3;
   for (int i = 0; i < loop; i++) {
-    double v1 = nd1(mt);
-    double v2 = nd2(mt);
-    d1 << v1;
-    d2 << v2;
-    d3 << (v1 - v2);
+    double r1 = nd1(mt);
+    double r2 = nd2(mt);
+    v1.push_back(r1);
+    v2.push_back(r2);
+    v3.push_back(r1 - r2);
   }
+  stat::sdouble d1(v1), d2(v2), d3(v3);
   stat::sdouble d4 = d1 - d2;
   std::cout << "d1    = " << d1 << std::endl;
   std::cout << "d2    = " << d2 << std::endl;
@@ -88,16 +97,21 @@ void sub_test() {
   std::cout << std::endl;
 }
 
+/*
+  Compare between direct calculation and error propagation.
+  Operation: Multiplication
+ */
 void mul_test() {
   std::cout << "Multiplication Test" << std::endl;
-  stat::sdouble d1, d2, d3;
+  std::vector<double> v1, v2, v3;
   for (int i = 0; i < loop; i++) {
-    double v1 = nd1(mt);
-    double v2 = nd2(mt);
-    d1 << v1;
-    d2 << v2;
-    d3 << (v1 * v2);
+    double r1 = nd1(mt);
+    double r2 = nd2(mt);
+    v1.push_back(r1);
+    v2.push_back(r2);
+    v3.push_back(r1 * r2);
   }
+  stat::sdouble d1(v1), d2(v2), d3(v3);
   stat::sdouble d4 = d1 * d2;
   std::cout << "d1    = " << d1 << std::endl;
   std::cout << "d2    = " << d2 << std::endl;
@@ -106,16 +120,21 @@ void mul_test() {
   std::cout << std::endl;
 }
 
+/*
+  Compare between direct calculation and error propagation.
+  Operation: Division
+ */
 void div_test() {
   std::cout << "Division Test" << std::endl;
-  stat::sdouble d1, d2, d3;
+  std::vector<double> v1, v2, v3;
   for (int i = 0; i < loop; i++) {
-    double v1 = nd1(mt);
-    double v2 = nd2(mt);
-    d1 << v1;
-    d2 << v2;
-    d3 << (v1 / v2);
+    double r1 = nd1(mt);
+    double r2 = nd2(mt);
+    v1.push_back(r1);
+    v2.push_back(r2);
+    v3.push_back(r1 / r2);
   }
+  stat::sdouble d1(v1), d2(v2), d3(v3);
   stat::sdouble d4 = d1 / d2;
   std::cout << "d1    = " << d1 << std::endl;
   std::cout << "d2    = " << d2 << std::endl;

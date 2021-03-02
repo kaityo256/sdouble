@@ -9,11 +9,19 @@ A single-header C++ for double with error propagation.
 ### constructor
 
 ```cpp
-stat::sdouble v;
-stat::sdouble v(mean, error);
+stat::sdouble v(double mean, double error);
+stat::sdouble v(std::vector<double> &r);
 ```
 
-The constructor `stat::sdouble v(mean, error)` creates an `stat::sdouble` object whose mean is `mean` and the error (standard deviation) is `error`. Without arguments, the constructor creates an uninitialized object.
+This constructor creates an `stat::sdouble` object whose mean is `mean` and the error (standard deviation) is `error`.
+
+```cpp
+stat::sdouble v(std::vector<double> &r);
+```
+
+This constructor creates an `stat::sdouble` object whose means and the error calculated from the given array `r`.
+
+Without arguments, the constructor creates an uninitialized object.
 
 ### Print the values
 
@@ -37,14 +45,12 @@ Calculations between `stat::sdouble` variables follows the error propagation for
 Here is a sample code.
 
 ```cpp
-stat::sdouble x1(10,2);
-stat::sdouble x2(5,1);
-stat::sdouble x1(10, 2);
-stat::sdouble x2(5, 1);
-std::cout << x1 + x2 << std::endl;
-std::cout << x1 - x2 << std::endl;
-std::cout << x1 * x2 << std::endl;
-std::cout << x1 / x2 << std::endl;
+  stat::sdouble x1(10, 2);
+  stat::sdouble x2(5, 1);
+  std::cout << x1 + x2 << std::endl;
+  std::cout << x1 - x2 << std::endl;
+  std::cout << x1 * x2 << std::endl;
+  std::cout << x1 / x2 << std::endl;
 ```
 
 Output.
@@ -74,16 +80,17 @@ Other operators such as `-`, `*`, `/` are definined with similar manner.
 
 ## Data input
 
-`stat::sdouble` can store the data with `<<` operator.
+`stat::sdouble` can be created from `std::vector<dobule>`.
 
 Here is the sample.
 
 ```cpp
-stat::sdouble x;
-x << 1.0;
-x << 2.0;
-x << 3.0;
-x << 4.0;
+std::vector<double> r;
+r.push_back(1.0);
+r.push_back(2.0);
+r.push_back(3.0);
+r.push_back(4.0);
+stat::sdouble v(r);
 std::cout << v << std::endl;
 ```
 

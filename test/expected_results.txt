@@ -19,8 +19,6 @@ Test for Data Input
 ----------------
 Test for standard deviation
 ----------------
-Mean and standard deviation
-99.9247 +- 2.97679
 Mean and standard deviation of the mean
 99.9247 +- 0.0941344
 
