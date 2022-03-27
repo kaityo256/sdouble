@@ -80,7 +80,7 @@ Other operators such as `-`, `*`, `/` are definined with similar manner.
 
 ## Data input
 
-`stat::sdouble` can be created from `std::vector<dobule>`.
+`stat::sdouble` can be created from `std::vector<double>`.
 
 Here is the sample.
 
